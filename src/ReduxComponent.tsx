@@ -21,6 +21,14 @@ import {
 } from '@opengeoweb/core';
 import ErrorBoundary from './ErrorBoundary';
 import { SimpleGeoWebPresets } from './SimpleGeoWebPresets';
+import {
+  radarLayer,
+  overLayer,
+  baseLayerGrey,
+} from './publicLayers';
+import type { Dimension } from './map/types';
+import { LayerType } from '@opengeoweb/webmap';
+import { LayerStatus } from '@opengeoweb/core/lib/store/mapStore/types';
 
 export interface ReduxLayer {
     id?: string;
@@ -30,38 +38,23 @@ export interface ReduxLayer {
     title?: string;
     enabled?: boolean;
     style?: string;
-    // dimensions?: Dimension[];
+    dimensions?: Dimension[];
     opacity?: number;
     type?: string;
-    // layerType?: LayerType;
-    // status?: LayerStatus;
+    layerType?: LayerType;
+    status?: LayerStatus;
     format?: string;
     // geojson?: FeatureCollection;
     selectedFeatureIndex?: number;
 }
 
-const radarLayer: ReduxLayer = {
-    id: 'radar',
-    name: 'radar',
-    title: 'Radar',
-    enabled: true,
-    style: 'default',
-}
-
-const baseLayerGrey: ReduxLayer = {
-    id: 'base',
-    name: 'base',
-    title: 'Base',
-    enabled: true,
-    style: 'default',
-}
-
-const overLayer: ReduxLayer = {
-    id: 'over',
-    name: 'over',
-    title: 'Over',
-    enabled: true,
-    style: 'default',
+export enum LayerActionOrigin {
+  layerManager = 'layerManager',
+  wmsLoader = 'WMSLayerTreeConnect',
+  ReactMapViewParseLayer = 'ReactMapViewParseLayer',
+  setLayerDimensionSaga = 'setLayerDimensionSaga',
+  toggleAutoUpdateSaga = 'toggleAutoUpdateSaga',
+  unregisterMapSaga = 'unregisterMapSaga',
 }
 
 interface SimpleGeoWebPresetsProps {
@@ -91,7 +84,8 @@ export const ConnectedMapWithTimeSlider = ({ mapId }: { mapId: string }) => {
     dispatch(
       mapActions.setBaseLayers({
         mapId,
-        layers: [baseLayerGrey, overLayer],
+        layers: [baseLayerGrey],
+        origin:  LayerActionOrigin.layerManager,
       }),
     );
   }, []);
@@ -121,7 +115,7 @@ export const ConnectedMapWithTimeSlider = ({ mapId }: { mapId: string }) => {
           >
             <TimeSliderConnect mapId={mapId} sourceId="timeslider-1" />
           </div>
-          <MapViewConnect mapId={mapId} showLayerInfo={false} />
+          <MapViewConnect mapId={mapId} showLayerInfo={true} />
         </div>
         <div
           style={{

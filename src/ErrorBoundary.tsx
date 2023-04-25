@@ -15,6 +15,7 @@
  * Copyright 2021 - Finnish Meteorological Institute (FMI)
  * */
 import * as React from 'react';
+import { Box, Link } from '@mui/material';
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
