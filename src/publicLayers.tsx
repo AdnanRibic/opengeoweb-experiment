@@ -95,6 +95,28 @@ export const overLayer = {
   layerType: mapTypes.LayerType.overLayer,
 };
 
+// Met Norway Layers List
+
+export const haloPrecipationLayer = {
+  service: "https://halo-wms.met.no/halo/default.map",
+  name: 'precipitation_mm_palette_regional',
+  format: 'image/png',
+  enabled: true,
+  id: generateLayerId(),
+  layerType: mapTypes.LayerType.overLayer,
+};
+
+export const haloBaseLayer = {
+  service: "https://halo-wms.met.no/halo/default.map",
+  name: 'basemap',
+  format: 'image/png',
+  layers: 'proff.bl',
+  enabled: true,
+  request: 'GetMap',
+  id: generateLayerId(),
+  layerType: mapTypes.LayerType.baseLayer,
+};
+
 // KNMI msgcpp List
 
 export const msgCppLayer = {

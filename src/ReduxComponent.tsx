@@ -26,6 +26,8 @@ import {
   radarLayer,
   overLayer,
   baseLayerGrey,
+  haloPrecipationLayer,
+  haloBaseLayer
 } from './publicLayers';
 import type { Dimension } from './map/types';
 import { LayerType } from '@opengeoweb/webmap';
@@ -100,7 +102,7 @@ export const ConnectedMapWithTimeSlider = ({ mapId }: { mapId: string }) => {
     dispatch(
       mapActions.setBaseLayers({
         mapId,
-        layers: [baseLayer],
+        layers: [haloBaseLayer, haloPrecipationLayer],
         origin:  LayerActionOrigin.layerManager,
       }),
     );
