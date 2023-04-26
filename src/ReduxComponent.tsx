@@ -18,6 +18,7 @@ import {
   AppStore,
   layerActions,
   mapSelectors,
+  mapTypes,
 } from '@opengeoweb/core';
 import ErrorBoundary from './ErrorBoundary';
 import { SimpleGeoWebPresets } from './SimpleGeoWebPresets';
@@ -74,6 +75,21 @@ const enhance = connect(
 
 const ConnectedSimpleGeoWebPresets = enhance(SimpleGeoWebPresets);
 
+const baseLayer = {
+  id: 'map-base',
+  enabled: true,
+  layerType: mapTypes.LayerType.baseLayer,
+  name: 'arcGisCanvas',
+  title: 'arcGisCanvas',
+  type: 'twms',
+};
+
+const styles = {
+  root: { height: '100vh', width: '100vw', zIndex: 0 },
+  controls: { position: 'absolute', top: 0 } as React.CSSProperties,
+};
+
+
 export const ConnectedMapWithTimeSlider = ({ mapId }: { mapId: string }) => {
   const dispatch = useDispatch();
 
@@ -84,7 +100,7 @@ export const ConnectedMapWithTimeSlider = ({ mapId }: { mapId: string }) => {
     dispatch(
       mapActions.setBaseLayers({
         mapId,
-        layers: [baseLayerGrey],
+        layers: [baseLayer],
         origin:  LayerActionOrigin.layerManager,
       }),
     );
@@ -115,7 +131,9 @@ export const ConnectedMapWithTimeSlider = ({ mapId }: { mapId: string }) => {
           >
             <TimeSliderConnect mapId={mapId} sourceId="timeslider-1" />
           </div>
-          <MapViewConnect mapId={mapId} showLayerInfo={true} />
+            <div style={styles.root}>
+            <MapViewConnect mapId={mapId} showLayerInfo={false} />
+            </div>
         </div>
         <div
           style={{
