@@ -3,6 +3,7 @@ export interface SimpleGeoWebPresetsProps {
     setLayers?: typeof layerActions.setLayers;
     mapId: string;
   }
+  
 
   import {
     msgCppLayer,
@@ -16,89 +17,114 @@ export interface SimpleGeoWebPresetsProps {
     harmoniePressure,
     harmoniePrecipitation,
     harmonieRelativeHumidityPl,
-    harmonieWindPl,
+  harmonieWindPl,
+  haloPrecipationLayer,
+  haloVindLayer,
+  MetNoTemp,
+  haloVind2Layer,
+  haloVind3Layer,
+  haloColorScaleLayer,
+  haloSeaTempLayer,
   } from './publicLayers';
 import { useDefaultMapSettings } from "./defaultStorySettings";
 
 export const SimpleGeoWebPresets: React.FC<SimpleGeoWebPresetsProps> = ({
-    setLayers,
+  setLayers,
+  mapId,
+}: SimpleGeoWebPresetsProps) => {
+  useDefaultMapSettings({
     mapId,
-  }: SimpleGeoWebPresetsProps) => {
-    useDefaultMapSettings({
-      mapId,
-      layers: [{ ...radarLayer, id: `radar-${mapId}` }],
-      baseLayers: [{ ...baseLayerGrey, id: `baseGrey-${mapId}` }, overLayer],
-    });
+    layers: [{ ...radarLayer, id: `radar-${mapId}` }],
+    baseLayers: [{ ...baseLayerGrey, id: `baseGrey-${mapId}` }, overLayer],
+  });
 
-    const presetHarmonie = {
-      layers: [harmonieAirTemperature],
-    };
-    const presetRadar = {
-      layers: [{ ...radarLayer, id: `radar-${mapId}-2` }],
-    };
-    const presetHarmoniePrecipAndObs = {
-      layers: [
-        harmoniePrecipitation,
-        { ...radarLayer, id: `radar-${mapId}-3` },
-        harmoniePressure,
-      ],
-    };
+  const presetRain = {
+    layers: [haloPrecipationLayer],
+  };
+  const presetVind = {
+    layers: [haloVind2Layer, haloVind3Layer, haloColorScaleLayer],
+  };
+  const presetTemp = {
+    layers: [haloSeaTempLayer],
+  };
 
-    const presetRadarMSGCPP = {
-      layers: [{ ...radarLayer, id: `radar-${mapId}-4` }, msgCppLayer],
-    };
+    // const presetRadar = {
+    //   layers: [{ ...radarLayer, id: `radar-${mapId}-2` }],
+    // };
+    // const presetHarmoniePrecipAndObs = {
+    //   layers: [
+    //     harmoniePrecipitation,
+    //     { ...radarLayer, id: `radar-${mapId}-3` },
+    //     harmoniePressure,
+    //   ],
+    // };
 
-    const presetWind = {
-      layers: [metNorwayWind1, metNorwayWind2, metNorwayWind3],
-    };
+    // const presetRadarMSGCPP = {
+    //   layers: [{ ...radarLayer, id: `radar-${mapId}-4` }, msgCppLayer],
+    // };
 
-    const presetHarmoniePL = {
-      layers: [harmonieWindPl, harmonieRelativeHumidityPl],
-    };
+    // const presetWind = {
+    //   layers: [metNorwayWind1, metNorwayWind2, metNorwayWind3],
+    // };
+
+    // const presetHarmoniePL = {
+    //   layers: [harmonieWindPl, harmonieRelativeHumidityPl],
+    // };
+  
+  //https://cdnstatic.ventusky.com/images/icons/blue-feel.svg
 
     return (
       <div
-        color="primary"
-        aria-label="outlined primary button group"
+        // color="primary"
+        // aria-label="outlined primary button group"
+        // data-title="Forecast"
+        // id="i"
+        style={{display: 'flex', flexDirection: 'column', alignItems: 'left'}}
       >
         <button
           onClick={(): void => {
             setLayers!({
-              layers: presetHarmonie.layers,
+              layers: presetRain.layers,
               mapId,
             });
           }}
+          id="i"
+          style={{margin: '5px'}}
         >
+          <span className="temp-icon"/>
           {' '}
-          Harmonie
+          Rain
         </button>
         <button
           onClick={(): void => {
             setLayers!({
-              layers: presetRadar.layers,
+              layers: presetVind.layers,
               mapId,
             });
           }}
+          style={{margin: '5px'}}
         >
-          Radar
+          Vind
         </button>
         <button
           onClick={(): void => {
             setLayers!({
-              layers: presetHarmoniePrecipAndObs.layers,
+              layers: presetTemp.layers,
               mapId,
             });
           }}
+          style={{margin: '5px'}}
         >
-          Precip + Obs
+          Temp
         </button>
-        <button
+        {/* <button
           onClick={(): void => {
             setLayers!({
               layers: presetRadarMSGCPP.layers,
               mapId,
             });
           }}
+          style={{margin: '5px'}}
         >
           Radar + MSGCPP
         </button>
@@ -109,6 +135,7 @@ export const SimpleGeoWebPresets: React.FC<SimpleGeoWebPresetsProps> = ({
               mapId,
             });
           }}
+          style={{margin: '5px'}}
         >
           Wind
         </button>
@@ -119,9 +146,10 @@ export const SimpleGeoWebPresets: React.FC<SimpleGeoWebPresetsProps> = ({
               mapId,
             });
           }}
+          style={{margin: '5px'}}
         >
           HarmoniePL
-        </button>
+        </button> */}
       </div>
     );
   };

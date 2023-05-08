@@ -95,7 +95,7 @@ export const ConnectedMapWithTimeSlider = ({ mapId }: { mapId: string }) => {
 
   useEffect(() => {
     // set layers
-    dispatch(mapActions.setLayers({ layers: [radarLayer], mapId }));
+    // dispatch(mapActions.setLayers({ layers: [radarLayer], mapId }));
     // baseLayers
     dispatch(
       mapActions.setBaseLayers({
@@ -104,6 +104,18 @@ export const ConnectedMapWithTimeSlider = ({ mapId }: { mapId: string }) => {
         origin:  LayerActionOrigin.layerManager,
       }),
     );
+
+    dispatch(
+      mapActions.setBbox({
+        mapId,
+        bbox: {
+          left: -1121495.97000957,
+          bottom: 7754668.742014913,
+          right: 3746079.0953531275,
+          top: 10762146.178985562
+        }
+      })
+    )
   }, []);
 
   return (
@@ -138,9 +150,10 @@ export const ConnectedMapWithTimeSlider = ({ mapId }: { mapId: string }) => {
         <div
           style={{
             position: 'absolute',
-            left: '50px',
-            top: '10px',
+            left: '10px',
+            bottom: '5vh',
             zIndex: 90,
+            display: 'flex',
           }}
         >
           <ConnectedSimpleGeoWebPresets mapId={mapId} />

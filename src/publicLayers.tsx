@@ -43,7 +43,92 @@ export const baseLayer = {
   id: generateLayerId(),
 };
 
-// Base Layers List
+export const haloPrecipationLayer = {
+  service: 'https://halo-wms.met.no/halo/default.map',
+  name: 'precipitation_mm_palette_regional',
+  format: 'image/png',
+  enabled: true,
+  id: generateLayerId(),
+  layerType: mapTypes.LayerType.overLayer
+}
+
+export const haloVindLayer = {
+  id: generateLayerId(),
+  layerType: mapTypes.LayerType.overLayer,
+  translationKey: 'halo-wind-knots-arrows-global',
+  name: 'precipitation_mm_palette_regional',
+  service: 'https://halo-wms.met.no/halo/default.map',
+  attribution: '<a href="https://halo.met.no/">MET WMS</a>',
+  format: 'image/png',
+  layers: 'ec.vind.10m',
+  request: 'GetMap',
+  styles: '',
+  version: '1.3.0',
+  transparent: true
+}
+
+export const haloVind2Layer = {
+  id: generateLayerId(),
+  layerType: mapTypes.LayerType.overLayer,
+  translationKey: 'halo-wind-knots-arrows-global',
+  name: 'ec.vind.10m',
+  service: 'https://halo-wms.met.no/halo/default.map',
+  type: 'wms',
+  format: 'image/png',
+  transparent: true,
+  styles: '',
+  width: '250',
+  height: '250',
+  language: 'eng'
+  // https://halo-wms.met.no/halo/default.map?&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&LAYERS=ec.wms.ff10m&WIDTH=1504&HEIGHT=1024&SRS=EPSG:3857&BBOX=-742834.8778237756,6177336.009552572,4124740.187538922,9491429.671076111&STYLES=&FORMAT=image/png&TRANSPARENT=TRUE&
+  // https://halo-wms.met.no/halo/default.map?&service=WMS&request=GetMap&layers=ec.wms.ff10m.iso&styles=&format=image/png&transparent=true&version=1.3.0&width=512&height=512&crs=EPSG:3575&bbox=0,-3378736.7955968394,1126245.5985322804,-2252491.197737135
+}
+
+export const haloColorScaleLayer = {
+  id: generateLayerId(),
+  layerType: mapTypes.LayerType.overLayer,
+  translationKey: 'halo-wind-knots-arrows-global',
+  name: 'ec.wms.t2m',
+  service: 'https://halo-wms.met.no/halo/default.map',
+  type: 'wms',
+  format: 'image/png',
+  transparent: true,
+  styles: '',
+  width: '250',
+  height: '250',
+  language: 'eng'
+  // https://halo-wms.met.no/halo/default.map?&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&LAYERS=ec.wms.ff10m&WIDTH=1504&HEIGHT=1024&SRS=EPSG:3857&BBOX=-742834.8778237756,6177336.009552572,4124740.187538922,9491429.671076111&STYLES=&FORMAT=image/png&TRANSPARENT=TRUE&
+  // https://halo-wms.met.no/halo/default.map?&service=WMS&request=GetMap&layers=ec.wms.ff10m.iso&styles=&format=image/png&transparent=true&version=1.3.0&width=512&height=512&crs=EPSG:3575&bbox=0,-3378736.7955968394,1126245.5985322804,-2252491.197737135
+}
+
+export const haloSeaTempLayer = {
+  id: generateLayerId(),
+  layerType: mapTypes.LayerType.overLayer,
+  translationKey: 'halo-wind-knots-arrows-global',
+  name: 'sst_3m_degc_palett_regional',
+  service: 'https://halo-wms.met.no/halo/default.map',
+  type: 'wms',
+  format: 'image/png',
+  transparent: true,
+  styles: '',
+}
+
+
+
+export const haloVind3Layer = {
+  id: generateLayerId(),
+  layerType: mapTypes.LayerType.overLayer,
+  translationKey: 'halo-wind-knots-arrows-global',
+  name: 'ec.wms.ff10m.iso',
+  service: 'https://halo-wms.met.no/halo/default.map',
+  type: 'wms',
+  format: 'image/png',
+  transparent: true,
+  styles: '',
+  width: '1504',
+  height: '1024',
+  language: 'eng'
+}
 
 export const baseLayerGrey = {
   id: generateLayerId(),
