@@ -1,4 +1,5 @@
-import { layerActions } from "@opengeoweb/core";
+import { layerActions, mapActions } from "@opengeoweb/core";
+import Modal from 'react-modal';
 export interface SimpleGeoWebPresetsProps {
     setLayers?: typeof layerActions.setLayers;
     mapId: string;
@@ -25,18 +26,59 @@ export interface SimpleGeoWebPresetsProps {
   haloVind3Layer,
   haloColorScaleLayer,
   haloSeaTempLayer,
+  haloBaseLayer,
   } from './publicLayers';
 import { useDefaultMapSettings } from "./defaultStorySettings";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { LayerActionOrigin } from "./types";
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+
 
 export const SimpleGeoWebPresets: React.FC<SimpleGeoWebPresetsProps> = ({
   setLayers,
   mapId,
 }: SimpleGeoWebPresetsProps) => {
-  useDefaultMapSettings({
-    mapId,
-    layers: [{ ...radarLayer, id: `radar-${mapId}` }],
-    baseLayers: [{ ...baseLayerGrey, id: `baseGrey-${mapId}` }, overLayer],
-  });
+  // useDefaultMapSettings({
+  //   mapId,
+  //   layers: [{ ...radarLayer, id: `radar-${mapId}` }],
+  //   baseLayers: [{ ...baseLayerGrey, id: `baseGrey-${mapId}` }, overLayer],
+  // });
+  const [modalOpen, setModalOpen] = useState(false);
+  const [rainChecked, setRainChecked] = useState(false);
+  const [windChecked, setWindChecked] = useState(false);
+  const [tempChecked, setTempChecked] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
+  const handleRainChange = () => {
+    setRainChecked(!rainChecked);
+  };
+
+  const handleWindChange = () => {
+    setWindChecked(!windChecked);
+  };
+
+  const handleTempChange = () => {
+    setTempChecked(!tempChecked);
+  };
+
 
   const presetRain = {
     layers: [haloPrecipationLayer],
@@ -47,6 +89,33 @@ export const SimpleGeoWebPresets: React.FC<SimpleGeoWebPresetsProps> = ({
   const presetTemp = {
     layers: [haloSeaTempLayer],
   };
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const baseLayers = [];
+    if (rainChecked) {
+      baseLayers.push(haloPrecipationLayer);
+      console.log(baseLayers)
+    }
+    else if (windChecked) {
+      baseLayers.push(haloVind2Layer);
+    }
+    else if (tempChecked) {
+      baseLayers.push(haloSeaTempLayer);
+    } else {
+      console.log('no layers selected');
+      baseLayers.push();
+      console.log(baseLayers)
+    }
+    dispatch(
+      mapActions.setLayers({
+        mapId,
+        layers: baseLayers,
+        origin: LayerActionOrigin.layerManager,
+      }),
+    );
+  }, [rainChecked, windChecked, tempChecked]);
 
     // const presetRadar = {
     //   layers: [{ ...radarLayer, id: `radar-${mapId}-2` }],
@@ -73,14 +142,81 @@ export const SimpleGeoWebPresets: React.FC<SimpleGeoWebPresetsProps> = ({
   
   //https://cdnstatic.ventusky.com/images/icons/blue-feel.svg
 
-    return (
+  return (
+    <>
       <div
+        style={{
+          position: 'absolute',
+          left: '10px',
+          bottom: '40vh',
+          zIndex: 90,
+          display: 'flex',
+          backgroundColor: 'lightgrey',
+          padding: '15px',
+          width: '180px'
+        }}
+      >
+      {modalOpen && (
+        <div className="modal">
+            <div className="modal-content"
+            style={{ display: 'flex', flexDirection: 'column'}}>
+            <span className="close" onClick={closeModal}>
+              &times;
+            </span>
+            <p>Select layers:</p>
+            <div>
+              <input
+                type="checkbox"
+                id="rain"
+                name="rain"
+                checked={rainChecked}
+                onChange={handleRainChange}
+              />
+              <label htmlFor="rain">Rain</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="wind"
+                name="wind"
+                checked={windChecked}
+                onChange={handleWindChange}
+              />
+              <label htmlFor="wind">Wind</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="temp"
+                name="temp"
+                checked={tempChecked}
+                onChange={handleTempChange}
+              />
+              <label htmlFor="temp">Temperature</label>
+            </div>
+          </div>
+        </div>
+      )}
+      </div>
+      <div
+      id="yourAppElement"
         // color="primary"
         // aria-label="outlined primary button group"
         // data-title="Forecast"
         // id="i"
         style={{display: 'flex', flexDirection: 'column', alignItems: 'left'}}
       >
+        
+        
+        <button
+          onClick={openModal}
+          id="i"
+          style={{margin: '5px'}}
+        >
+          <span className="temp-icon"/>
+          {' '}
+          Layers
+        </button>
         <button
           onClick={(): void => {
             setLayers!({
@@ -91,7 +227,6 @@ export const SimpleGeoWebPresets: React.FC<SimpleGeoWebPresetsProps> = ({
           id="i"
           style={{margin: '5px'}}
         >
-          <span className="temp-icon"/>
           {' '}
           Rain
         </button>
@@ -151,5 +286,6 @@ export const SimpleGeoWebPresets: React.FC<SimpleGeoWebPresetsProps> = ({
           HarmoniePL
         </button> */}
       </div>
+      </>
     );
   };

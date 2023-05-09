@@ -102,7 +102,7 @@ export const ConnectedMapWithTimeSlider = ({ mapId }: { mapId: string }) => {
     dispatch(
       mapActions.setBaseLayers({
         mapId,
-        layers: [haloBaseLayer, haloPrecipationLayer],
+        layers: [haloBaseLayer],
         origin:  LayerActionOrigin.layerManager,
       }),
     );
@@ -135,6 +135,7 @@ export const ConnectedMapWithTimeSlider = ({ mapId }: { mapId: string }) => {
           <LegendConnect mapId={mapId} />
           <MultiMapDimensionSelectConnect />
           <div
+            id="yourAppElement"
             style={{
               position: 'absolute',
               left: '0px',
@@ -144,7 +145,7 @@ export const ConnectedMapWithTimeSlider = ({ mapId }: { mapId: string }) => {
             }}
           >
             <TimeSliderConnect mapId={mapId} sourceId="timeslider-1" />
-          </div>
+          </div >
             <div style={styles.root}>
             <MapViewConnect mapId={mapId} showLayerInfo={false} />
             </div>

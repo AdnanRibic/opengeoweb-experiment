@@ -10,7 +10,7 @@ import ResponsiveMapView from './atmosMap';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" id="yourAppElement">
       <Provider store={store}>
         <ConnectedMapWithTimeSlider mapId='mapid_1' />
         {/* <ProductBase isEditing={false} product={mockProducts[0]} /> */}
