@@ -90,6 +90,12 @@ export const SimpleGeoWebPresets: React.FC<SimpleGeoWebPresetsProps> = ({
     layers: [haloSeaTempLayer],
   };
 
+  const payload = {
+    mapId: mapId,
+    layerIndex: 1,
+    layerId: 'layerid_42'
+  }
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -106,7 +112,9 @@ export const SimpleGeoWebPresets: React.FC<SimpleGeoWebPresetsProps> = ({
     } else {
       console.log('no layers selected');
       baseLayers.push();
-      console.log(baseLayers)
+      dispatch(
+        mapActions.layerDelete(payload)
+      )
     }
     dispatch(
       mapActions.setLayers({
@@ -151,9 +159,12 @@ export const SimpleGeoWebPresets: React.FC<SimpleGeoWebPresetsProps> = ({
           bottom: '40vh',
           zIndex: 90,
           display: 'flex',
-          backgroundColor: 'lightgrey',
-          padding: '15px',
-          width: '180px'
+          backgroundColor: 'white',
+          padding: modalOpen ? '15px' : '0px',
+          width: modalOpen ? '180px' : '0px',
+          borderWidth: '1px',
+          borderColor: 'black',
+          borderStyle: modalOpen ? 'solid' : 'none',
         }}
       >
       {modalOpen && (
